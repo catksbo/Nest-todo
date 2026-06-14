@@ -34,6 +34,19 @@ export class AuthController {
     return { message: 'User registered successfully', token };
   }
 
+  @Post('login')
+  async loginUser(@Body() body: { email: string; password: string }) {
+      if (!body.email || !body.password) {
+        throw new Error('Email and password are required');
+      }
+      const token = await this.authService.loginUser(body.email, body.password);
+      if (!token) {
+        throw new UnauthorizedException();
+      }
+      return { message: 'User logged in successfully', token };
+    }
+  
+
 
 }
 
