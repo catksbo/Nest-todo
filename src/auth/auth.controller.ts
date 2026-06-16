@@ -30,7 +30,7 @@ export class AuthController {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: 1000 * 60 * 60 * 24 * 7,
-  });
+    });
     return { message: 'User registered successfully', token };
   }
 
@@ -46,6 +46,15 @@ export class AuthController {
       return { message: 'User logged in successfully', token };
     }
   
+  @Post('logout')
+  async logoutUser(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+    return { message: 'User logged out successfully' };
+  }
 
 
 }
