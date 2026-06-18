@@ -2,6 +2,8 @@ import { Controller, Delete, Get, Param, Post, Body, Put, UseGuards, Req } from 
 import { AppService } from './app.service';
 // import type {Task} from './FakeDatabase';
 import { AuthGuard } from './auth/auth.guard';
+import { CreateTaskDto } from './Dto/CreateTask.dto';
+import { UpdateTaskDto } from './Dto/UpdateTask.dto';
 
 @Controller('tasks')
 export class AppController {
@@ -27,7 +29,7 @@ export class AppController {
 
   @UseGuards(AuthGuard)
   @Post('')
-  addTask(@Body() newTask: { title: string}, @Req() req) {
+  addTask(@Body() newTask: CreateTaskDto, @Req() req) {
     const userId = req.user.sub;
     if (!newTask.title) return undefined
     return this.appService.addTask(userId, newTask);
@@ -42,7 +44,7 @@ export class AppController {
 
   @UseGuards(AuthGuard)
   @Put('')
-  updateTask(@Body() updatedTask: {title: string, id: string}, @Req() req) {
+  updateTask(@Body() updatedTask: UpdateTaskDto, @Req() req) {
     const userId = req.user.sub;
     if (!updatedTask.title || !updatedTask.id) return undefined
     return this.appService.updateTask(userId, updatedTask);
