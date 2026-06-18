@@ -3,6 +3,7 @@ import type { Response } from 'express';
 import {UnauthorizedException} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import bcrypt from "bcrypt";
+import { SignupDto } from 'src/Dto/Signup.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +15,7 @@ export class AuthController {
   // }
 
   @Post('register')
-  async registerUser(@Body() body: { email: string; password: string }, @Res({ passthrough: true }) res: Response) {
+  async registerUser(@Body() body: SignupDto, @Res({ passthrough: true }) res: Response) {
     if (!body.email || !body.password) {
       throw new Error('Email and password are required');
     } 
@@ -35,7 +36,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async loginUser(@Body() body: { email: string; password: string }) {
+  async loginUser(@Body() body: SignupDto) {
       if (!body.email || !body.password) {
         throw new Error('Email and password are required');
       }
