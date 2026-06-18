@@ -19,9 +19,8 @@ export class AuthController {
     if (!body.email || !body.password) {
       throw new Error('Email and password are required');
     } 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(body.password, salt);
-    const token = await this.authService.registerUser(body.email, hashedPassword);
+  
+    const token = await this.authService.registerUser(body.email, body.password);
     if (!token) {
     throw new UnauthorizedException();
     };

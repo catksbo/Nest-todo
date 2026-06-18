@@ -20,6 +20,7 @@ model User{
   createdAt DateTime @default(now())
 
   todoListItem todoListItem[]
+  refreshToken RefreshToken?
 }
 
 model todoListItem{
@@ -28,6 +29,15 @@ model todoListItem{
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   userId String
+
+  user User @relation(fields: [userId], references: [id])
+}
+model RefreshToken{
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 
   user User @relation(fields: [userId], references: [id])
 }
