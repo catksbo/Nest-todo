@@ -2,9 +2,10 @@ import { Body, Controller, Post, Res} from '@nestjs/common';
 import type { Response } from 'express';
 import {UnauthorizedException} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import bcrypt from "bcrypt";
 import { SignupDto } from 'src/Dto/Signup.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private  authService: AuthService) {}

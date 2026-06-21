@@ -14,7 +14,7 @@ export class AppService {
         userId: userId
       }
     })
-    return userTasks.map((task) => (task.title));
+    return userTasks;
   } 
   // addTasks(userId: string, newTask: Partial<Task>): Task {
   //   const newlyTask = {

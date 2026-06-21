@@ -4,7 +4,12 @@ import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 import { CreateTaskDto } from './Dto/CreateTask.dto';
 import { UpdateTaskDto } from './Dto/UpdateTask.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiOkResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ResGetTaskDto } from './Dto/ResGetTask.dto';
 
+@ApiBearerAuth()
+@ApiTags('Application')
 @Controller('tasks')
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -16,6 +21,8 @@ export class AppController {
   // }
   @UseGuards(AuthGuard)
   @Get('')
+  @ApiOperation({ summary: 'Find all tasks of user' })
+  @ApiOkResponse({description: 'Tasks fetched successfully', type: [ResGetTaskDto]})
   getTasks(@Req() req) {
     return this.appService.getTasks(req.user.sub);
   }
@@ -29,6 +36,13 @@ export class AppController {
 
   @UseGuards(AuthGuard)
   @Post('')
+  @ApiOperation({ summary: 'Add task for user' })
+  // @ApiBody({
+  // type: CreateTaskDto})
+  @ApiOkResponse({
+  description: 'Task created successfully',
+  type: ResGetTaskDto
+})
   addTask(@Body() newTask: CreateTaskDto, @Req() req) {
     const userId = req.user.sub;
     if (!newTask.title) return undefined
