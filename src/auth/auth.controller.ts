@@ -2,9 +2,10 @@ import { Body, Controller, Post, Res} from '@nestjs/common';
 import type { Response } from 'express';
 import {UnauthorizedException} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import bcrypt from "bcrypt";
 import { SignupDto } from 'src/Dto/Signup.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private  authService: AuthService) {}
@@ -19,9 +20,8 @@ export class AuthController {
     if (!body.email || !body.password) {
       throw new Error('Email and password are required');
     } 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(body.password, salt);
-    const token = await this.authService.registerUser(body.email, hashedPassword);
+  
+    const token = await this.authService.registerUser(body.email, body.password);
     if (!token) {
     throw new UnauthorizedException();
     };
